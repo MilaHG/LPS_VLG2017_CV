@@ -6,7 +6,7 @@
 $hote = 'localhost';
 $bdd = 'cv_vlg2017';
 $utilisateur = 'root';
-$mdp = ''; /* pour MAC le mdp est root */
+$mdp = 'root'; /* pour MAC le mdp est root */
 
 # variable de réception pour la connexion à la BDD
 $pdo = new PDO('mysql:host=' . $hote . ';dbname=' . $bdd, $utilisateur, $mdp, array(PDO::ATTR_ERRMODE => PDO::ERRMODE_WARNING, PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8'));
@@ -42,6 +42,7 @@ $msg = ""; // stockage des messages pour les afficher à l'utilisateur
 
 # DEFINITION URL DU SITE
 define("URL", "/LPS_VLG2017_CV/");
+echo URL; echo '<br />';
 
 /* * ****************************************** */
 
@@ -50,3 +51,4 @@ define("RACINE_SERVEUR", $_SERVER['DOCUMENT_ROOT']);
 /* information récupérée dynamiquement grace à la superglobale $_SERVER
  * information nécessaire pour l'enregistrement de fichier sur notre serveur (photo...)
  */
+echo RACINE_SERVEUR; echo '<hr />';

@@ -7,12 +7,12 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">Ma Boutique</a>
+            <a class="navbar-brand" href="#">Mila</a>
         </div>
         <div id="navbar" class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
-                <li <?php echo active(URL . 'boutique.php'); ?> ><a href="<?php echo URL; ?>boutique.php">Boutique</a></li>
-                <li <?php echo active(URL . 'panier.php'); ?> ><a href="<?php echo URL; ?>panier.php">Panier</a></li>
+                <li <?php echo active(URL . 'index.php'); ?> ><a href="<?php echo URL; ?>admin/index.php">Accueil</a></li>
+                <li <?php echo active(URL . 'connexiojn.php'); ?> ><a href="<?php echo URL; ?>panier.php">Panier</a></li>
                 <?php
                 if (utilisateur_est_connecte()) {// menu connecté
                     echo '

@@ -1,15 +1,11 @@
+/*@charset "utf-8"; */
+/* CSS stylesheet admin mila */
 body {
   padding-top: 50px;
 }
 .starter-template {
   padding: 40px 15px;
   text-align: center;
-}
-
-
-/*STYLE PERSO CSS*/
-.blueviolet {
-	color: blueviolet !important;
 }
 
 .erreur {
@@ -27,9 +23,13 @@ body {
 	padding: 10px;
 	margin-top: 20px;
 }
-
-
-.panier{
-	font-weight: bold;
-	text-align: center;
+/* Sticky footer styles
+-------------------------------------------------- */
+.footer {
+ /* position: absolute;
+/*  bottom: 0;
+  width: 100%;
+  /* Set the fixed height of the footer here */
+  height: 60px;
+  background-color: #f5f5f5;
 }
