@@ -13,23 +13,23 @@
             <ul class="nav navbar-nav">
                 <li <?php echo active(URL . 'index.php'); ?> ><a href="<?php echo URL; ?>admin/index.php">Accueil</a></li>
                 <li <?php echo active(URL . 'connexiojn.php'); ?> ><a href="<?php echo URL; ?>panier.php">Panier</a></li>
-                <?php
-                if (utilisateur_est_connecte()) {// menu connecté
-                    echo '
-  <li' . active(URL . 'profil.php') . '><a href="' . URL . 'profil.php">Profil</a></li>
-  <li><a href="' . URL . 'connexion.php?action=deconnexion">Déconnexion</a></li>';
-                } else {// menu anonyme
-                    echo '
-  <li' . active(URL . 'connexion.php') . '><a href="' . URL . 'connexion.php">Connexion</a></li>
-  <li' . active(URL . 'inscription.php') . '><a href="' . URL . 'inscription.php">Inscription</a></li>';
-                }
+                <?php /*
+                  if (utilisateur_est_connecte()) {// menu connecté
+                  echo '
+                  <li' . active(URL . 'profil.php') . '><a href="' . URL . 'profil.php">Profil</a></li>
+                  <li><a href="' . URL . 'connexion.php?action=deconnexion">Déconnexion</a></li>';
+                  } else {// menu anonyme
+                  echo '
+                  <li' . active(URL . 'connexion.php') . '><a href="' . URL . 'connexion.php">Connexion</a></li>
+                  <li' . active(URL . 'inscription.php') . '><a href="' . URL . 'inscription.php">Inscription</a></li>';
+                  }
 
-                if (utilisateur_est_connecte_et_est_admin()) {// menu admin
-                    echo '
-  <li' . active(URL . 'admin/gestion_boutique.php') . '><a href="' . URL . 'admin/gestion_boutique.php">Gestion boutique</a></li>
-  <li' . active(URL . 'admin/gestion_membres.php') . '><a href="' . URL . 'admin/gestion_membres.php">Gestion membres</a></li>
-  <li' . active(URL . 'admin/gestion_commandes.php') . '><a href="' . URL . 'admin/gestion_commandes.php">Gestion commandes</a></li>';
-                }
+                  if (utilisateur_est_connecte_et_est_admin()) {// menu admin
+                  echo '
+                  <li' . active(URL . 'admin/gestion_boutique.php') . '><a href="' . URL . 'admin/gestion_boutique.php">Gestion boutique</a></li>
+                  <li' . active(URL . 'admin/gestion_membres.php') . '><a href="' . URL . 'admin/gestion_membres.php">Gestion membres</a></li>
+                  <li' . active(URL . 'admin/gestion_commandes.php') . '><a href="' . URL . 'admin/gestion_commandes.php">Gestion commandes</a></li>';
+                  } */
                 ?>
             </ul>
         </div><!--/.nav-collapse -->
