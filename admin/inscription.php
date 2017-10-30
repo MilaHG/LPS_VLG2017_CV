@@ -2,67 +2,92 @@
 require_once('../inc/init.inc.php');
     
 # Une fois le formulaire fait en HTML on réalise les traitements PHP et en 1er on déclare les variables correspondant à notre formulaire
-$pseudo = "";
-$mdp = "";
-$avatar = "";
-$etat_civil = "";
-$nom = "";
-$prenom = "";
-$age = "";
-$email = "";
-$sexe = "f";
-$adresse = "";
-$cp = "";
-$ville = "";
-$tel = "";
+$prenom = ""; //
+$nom = ""; //
+$email = ""; //
+$tel = ""; //
+$mdp = ""; //
+$pseudo = ""; //
+$avatar = ""; //
+$age = ""; //
+$date_birth = ""; // NON
+$sexe = "f"; //
+$etat_civil = ""; //
+$adresse = ""; //
+$cp = ""; //
+$ville = ""; //
+$pays = ""; // NON 
+$web = ""; //
+# 16 champs
+
+
+#-1 on détecte si l'internaute a cliqué sur le bouton pour s'inscrire en ayant renseigné tous les champs
+if (isset($_POST['prenom']) && isset($_POST['nom']) && isset($_POST['email']) && isset($_POST['tel']) && isset($_POST['mdp']) && ($_POST['pseudo']) && isset($_POST['avatar']) && isset($_POST['age']) && isset($_POST['sexe']) && isset($_POST['etat_civil']) && isset($_POST['adresse']) && isset($_POST['cp']) && isset($_POST['ville']) && isset($_POST['web'])) {
+    extract($_POST); // transforme chaque indice du tableau array en variable qui contient la valeur correspondante
+  // faire un controle sur la taille du pseudo (entre 1 et 20 caractères)
+  // echo 'TEST';
+    if(strlen($pseudo) < 1 || strlen($pseudo) > 20)// si erreur de taille sur le pseudo
+    {
+        $msg .= '<div class="erreur">Erreur sur la taille du pseudo:<br />Le pseudo doit contenir entre 1 et 20 caractères (inclus).</div>';
+    }
+    // expression régulière - on défini les caractères qu'on n'accepte pas
+    if(!preg_match('#^[a-zA-Z0-9.ç_-]+$#', $pseudo))
+    {
+        /*
+        les signes # indiquent le début et la fin de l'expression régulière
+        le ^ indique le début de la chaine, sinon la chaine pourrait commencer par autre chose
+        le $ indique la fin de la chaine, sinon la chaine pourrait finir par autre chose
+        le + indique qu'on peyt retrouver plusieurs fois le même caractère, sinon on ne pourrait le trouver qu'une seule fois
+
+        preg_match() renvoie false si un caractère non autorisé par l'expression régulière se trouve dans la chaine testée (ici $pseudo)
+        */
+        $msg .= '<div class="erreur">Erreur sur le pseudo:<br />Caractères autorisés: de a - z et de 0 - 9.</div>';
+    }
+        // on protège les saisies contre les injections de code
+         $prenom = htmlentities($prenom, ENT_QUOTES);
+         $nom = htmlentities($nom, ENT_QUOTES);
+         $email = htmlentities($email, ENT_QUOTES);
+         $tel = htmlentities($tel, ENT_QUOTES);
+         $mdp = htmlentities($mdp, ENT_QUOTES);
+         $pseudo = htmlentities($pseudo, ENT_QUOTES);
+        // $avatar = htmlentities($avatar, ENT_QUOTES);
+         $age = htmlentities($age, ENT_QUOTES);
+         $date_birth = ""; // NON
+         $sexe = htmlentities($sexe, ENT_QUOTES);
+         $etat_civil = htmlentities($etat_civil, ENT_QUOTES);
+         $adresse = htmlentities($adresse, ENT_QUOTES);
+         $cp = htmlentities($cp, ENT_QUOTES);
+         $ville = htmlentities($ville, ENT_QUOTES);
+         $pays = ""; // NON 
+         $web = htmlentities($web, ENT_QUOTES);
     
-#-1 on détecte si l'internaute a cliqué sur le bouton pour s'inscrire en ayant renseigné les champs obliatoires (pseudo et mdp)
-if (isset($_POST['pseudo']) && isset($_POST['mdp'])) {
-    #-2 si l'internaute a cliqué on vérifie avec la fonction DEBUG (cf. functions.inc.php appellée par init.inc.php) les saisies postées
+        // avant l'enregistrement en BDD on vérifie que le pseudo est unique (cf modélisation BDD ou le pseudo est unique)
+         $controle_pseudo = execute_requete("SELECT * FROM t_utilisateurs WHERE pseudo='$pseudo'");
+
+    if($controle_pseudo->rowCount() >= 1) // s'il y a au moins une ligne affectée par la requete le pseudo existe déjà
+    {
+        $msg .= '<div class="erreur">Erreur sur le pseudo:<br />Pseudo indisponible.</div>';
+    }
+
+    // validation et inscription en BDD
+    if(empty($msg)) // s'il n'y a pas de message d'erreur ($msg est vide) on peut lancer l'inscriptions
+    {
+        // $mdp = password_hash($mdp, PASSWORD_DEFAULT); // cryptage du mdp
+        execute_requete("INSERT INTO t_utilisateurs (prenom, nom, email, telephone, mdp, pseudo, avatar, age, sexe, etat_civil, adresse, ville, code_postal, site_web) VALUES ('$prenom', '$nom', '$email', '$tel', '$mdp', '$pseudo', '', '$age', '$sexe', '$etat_civil', '$adresse', '$ville', '$cp', '$web')");
+
+    // à l'enregistrement du formulaire en BDD on redirige l'utilisateur sur une autre page
+    // pas de HTML avant
+    header("location:connexion.php"); // 
+    $msg .= '<div class="succes">Inscription OK.</div>';
     
-    debug($_POST);
-    #-3 pour le PSEUDO si les caractères interdits ou un pseudo trop court ou trop long ont été renseignés on refuse l'insertion en BDD et en informe l'internaute
-    $verif_saisie = preg_match('#^[a-zA-Z0-9._-]+$#', $pseudo);
-    /* preg_match() est une expression régulière (regex) toujours entourée 
-     * du symbole # dieze afin de préciser des options choisies : ^ désigne 
-     * le début de la chaîne
-     * $ désigne la fin de la chaîne
-     * + est présent pour dire que les lettres autorisées peuvent apparaître
-     *  plusieurs fois
-     */
-         
-    if ($verif_saisie && (strlen($pseudo) < 1 || strlen($pseudo) > 20 ))
-        {
-            $msg .= "<div class='erreur'>Le pseudo doit contenir entre 1 et 20 caractères. <br> Caractère accepté : Lettre de A à Z et chiffre de 0 à 9</div>";
-        }
-        else
-        {
-            extract($_POST); // transforme chaque indice du tableau array en variable qui contient la valeur correspondante
-            #-4 la saisie est bonne et on vérifie si les infos n'existent pas déjà en BDD 
-            $t_utilisateurs = execute_requete("SELECT * FROM t_utilisateurs WHERE pseudo = '$_POST[pseudo]'");
-            #-5 si le pseudo existe déjà en BDD (au moins 1 ligne de résultat à la requê te) on refuse l'inscription et informe l'internaute
-            if ($t_utilisateurs->num_rows > 0)
-            {
-                $msg .= "<div class='erreur'>Pseudo indisponible. Veuillez en choisir un autre, merci.</div>"; 
-            }
-            #-6 la saisie est bonne et le pseudo inexistant en BDD => on inscrit l'internaute (insertion en BDD)
-            else
-            {
-                #-7 on boucle sur toutes les saisies afin de les passer dans les fonctions prédéfinies PHP htmlEntities et addSlashes. /!\ Cela permet d'effectuer 1 premier traitement mais ce n'est pas pour autant complétement sécurisé
-                foreach ($_POST as $key => $value) 
-                    {
-                       $_POST[$key] = htmlentities(addslashes($value));
-                    }
-                    execute_requete("INSERT INTO t_utilisateurs (pseudo, mdp, avatar, etat_civil, nom, prenom, age, email, sexe, adresse, ville, code_postal, telephone, site_Òweb) VALUES ($pseudo, $mdp, $avatar, $etat_civil, $nom, $prenom, $age, $email, $sexe, $adresse, $ville, $cp, $tel, $web)");
-                    // à l'enregistrement du formulaire en BDD on redirige l'utilisateur sur une autre page
-                    // pas de HTML avant
-                    // header("location:connexion.php"); // 
-                    $msg .= '<div class="succes">Inscription OK.</div>';
-            }
-        }
+    }
+    # a comenter
+    else
+  {
+    $msg .= '<div class="succes">Votre Pseudo est : ' . $pseudo . '</div>';
+  }
+  $msg .= '<div class="erreur">Formulaire incomplet:<br />Recommencez votre saisie.</div>';
 }
-    
-    
     
 /***********************************/
     

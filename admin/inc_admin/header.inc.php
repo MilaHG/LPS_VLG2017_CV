@@ -7,8 +7,8 @@
         <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
         <meta name="description" content="description">
         <meta name="author" content="Moi">
-        <!--<link rel="icon" href="<?= URL; ?>lib/img/cat.png">-->
-        <link rel="icon" href="../../lib/img/cat.png">
+        <link rel="icon" href="<?= URL; ?>lib/img/cat.png">
+        <!--<link rel="icon" href="../../lib/img/cat.png">-->
 
 
         <title>MilaHG - ADMIN</title>
